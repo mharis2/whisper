@@ -1,0 +1,28 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Ignore media files uploaded to Cloudinary
+public/uploads/
+
+# Ignore Docker-related files
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Ignore build artifacts
+build/
+dist/
+
+# Ignore logs
+logs/
+
+# Ignore IDE files
+.idea/
+.vscode/
