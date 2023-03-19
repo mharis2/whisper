@@ -66,6 +66,9 @@ router.post('/login', async (req, res) => {
     }
 
     // Check if password is correct
+    if (!password || !user.rows[0].password) {
+      return res.status(401).send('Invalid credentials');
+    }
     const isMatch = await bcrypt.compare(password, user.rows[0].password);
     if (!isMatch) {
       return res.status(401).send('Invalid credentials');
@@ -90,5 +93,6 @@ router.post('/login', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
 
 module.exports = router;
