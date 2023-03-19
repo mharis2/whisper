@@ -1,6 +1,6 @@
-# Chirp - A Real-time Chat Application
+# whisper - A Real-time Chat Application
 
-Chirp is a real-time chat application inspired by popular platforms like Slack and WhatsApp. Users can chat with each other, create group chats, and send images/videos. The project is built using modern technologies to showcase software engineering skills.
+whisper is a real-time chat application. Users can chat with each other, create group chats, and send images/videos. The project is built using modern technologies to showcase software engineering skills.
 
 ## Features
 
