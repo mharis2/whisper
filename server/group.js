@@ -87,4 +87,27 @@ router.get('/group/:group_id', authenticateJWT, async (req, res) => {
   }
 });
 
+// Get all groups that the user has joined
+// Get all groups that the user has joined
+router.get('/my-groups', authenticateJWT, async (req, res) => {
+    try {
+      const user_id = req.user.id;
+  
+      const groups = await pool.query(
+        `SELECT g.id, g.name, g.description, g.created_at
+         FROM groups g
+         JOIN group_members gm ON g.id = gm.group_id
+         WHERE gm.user_id = $1`,
+        [user_id]
+      );
+  
+      res.status(200).json({ groups: groups.rows });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+});
+
+  
+
 module.exports = router;

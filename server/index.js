@@ -1,32 +1,55 @@
 require('dotenv').config();
+const path = require('path');
+
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
+const cors = require('cors');
+
 const authRouter = require('./auth.js');
-const groupRouter = require('./group'); // Add this line
+const groupRouter = require('./group');
 const messageRouter = require('./message');
+const chat = require('./chat');
+const chatsRouter = require('./chats');
+const userRouter = require('./user');
+
+
 
 const app = express();
+
+//const server = http.createServer(app);
 const server = http.createServer(app);
-const io = socketIO(server);
 
+const io = socketIO(server, {
+  cors: {
+    origin: '*',
+  },
+});
+
+app.use(cors());
 app.use(express.json());
-
-// const chirpsRouter = require('./chirp');
-// app.use('/chirps', chirpsRouter);
 
 const PORT = process.env.PORT || 5001;
 
-app.use('/auth', authRouter);
-app.use('/group', groupRouter); // Add this line
-app.use('/message', messageRouter);
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
-  socket.on('disconnect', () => {
-    console.log('A user disconnected');
-  });
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-module.exports = app;
+app.use('/auth', authRouter);
+app.use('/group', groupRouter);
+app.use('/message', messageRouter);
+app.use('/api/chats', chatsRouter);
+app.use('/user', userRouter);
+
+
+
+
+chat(io);
+
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+module.exports = server;
